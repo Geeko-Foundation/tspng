@@ -14,10 +14,10 @@ We plan the following features:
 - A framework style that will enable easy addition of new features;
 - Easy hosting options
 
-
 ### UI Framework
-As a starting point I've chosen the [Daemonite Material UI 2](https://djibe.github.io/material/) framework - only as it is what I am most familiar with.
-It quickly creates usable UIs that are easy to use and understand. I have created a "dashboard" style that might be a good starting point for the UI.
+As a starting point I've chosen the [Daemonite Material UI 2](https://djibe.github.io/material/) design framework - only as it is what I am most familiar with.
+It quickly creates usable UIs that are easy to use and understand. I have created a "dashboard" style that might be a good starting point for the UI. 
+The dashboard is designed to minimize full page reload by using jquery or javascript ajax calls to retrieve rendered html or json fragments. 
 
 ### Database
 While Django can use most databases, there is a chance that this will be multi-tenanted - in which case Postgres is the best choice.
