@@ -35,3 +35,8 @@ For security purposes, it is important to have 2FA/MFA in place.
 
 ### Active Directory / LDAP Integration
 Should be an option, in order to link existing LDAP accounts to the system. Single source of truth. Always!!!
+
+### User Profile information
+For obivous reasons, it is important to have a user profile containing more information than just the standard user details that Django records.
+In addition some of it will be transient, such as the user's bank account details - which will recorded in Wise (or other regulated institutions) and not by us. 
+This profile can be linked to AD or LDAP for example.
