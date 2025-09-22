@@ -1,0 +1,256 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Add Material font (Roboto) and Material icon as needed -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&family=Roboto+Slab:wght@300;400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+          rel="stylesheet" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" crossorigin>
+
+
+    <!-- Material CSS -->
+    <link href="https://cdn.jsdelivr.net/gh/djibe/material@4.6.2-1.0/css/material.min.css" rel="stylesheet" crossorigin>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+            integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="{% static 'css/loader.css' %}" rel="stylesheet">
+    <link href="{% static 'css/tooltip.css' %}" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+
+    <script>
+
+        /*function sideMenu() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        window.onload = (event) => {
+            console.log("page is fully loaded");
+            onclick()
+            var sm = document.getElementById("myNavDrawer");
+            window.alert('what');
+            if (sm.hidden === true) {
+                sm.hidden = false;
+            } else {
+                sm.hidden = true;
+            }
+        };
+*/
+
+        $(document).ready(function () {
+            // Load the form in the modal
+            //$('#sound_tag')[0].play();
+            //sound_msg.play();
+            //$('#webpushModal').modal('show');
+            //let sterm = $("#keywords").val();
+            //sterm = encodeURIComponent(sterm);
+
+            $('#myNavDrawer').show();
+            console.log('loading click map');
+            const pageProps = {
+                // DOM ID = url, tab or windows title, ie:
+                'section-profile': ['/profile/', 'Edit Profile'],
+                'search-btn': ['/search/?keywords=' + keywords + '/', 'Search Results'],
+            };
+            console.log('loaded.');
+
+
+            function myProfileEdit() {
+                console.log('dialog for !new volume!!');
+                //e.preventDefault();
+                $("#modalTitle").text("Editing {{ request.user.first_name }}'s Profile ");
+                $("#modalFooter").text('');
+                $("#myNavdrawer").navdrawer("hide");
+                $("#modalContent").load("/profile/");
+                $("#dynamicModal").modal('show');
+                $('#modalAction').click(function () {
+                    $('#result').load(d.url, function () {
+                        $("#modalContent").html('');
+                        $('#dynamicModal').modal('hide');
+                    });
+                });
+            }
+
+            function genericDialog(loaduri, action) {
+                console.log('generic dialog for ' + loaduri);
+                //e.preventDefault();
+                $("#modalTitle").text(action);
+                //$("#modalFooter").text('');
+                $("#myNavdrawer").navdrawer("hide");
+                $("#modalContent").load(loaduri);
+                $("#dynamicModal").modal('show');
+                // $("#dynamicModal").html('<div class="loader text-info"></div>');
+                $('#modalAction').click(function () {
+                    $('#result').load(d.url, function () {
+                        $("#modalContent").html('');
+                        $('#dynamicModal').modal('hide');
+                    });
+                });
+            }
+
+            function genericTabActions(loaduri, tabname) {
+                console.log('loading ' + loaduri + ' for tab ' + tabname)
+                $("#myNavdrawer").navdrawer("hide");
+                $("#tab2_content").html('<div class="loader text-info"></div>');
+                $("#tab2_content").show();
+                $("#second-tab").text(tabname);
+                $("html, body").animate({scrollTop: 0}, "slow");
+                $('#topMenu a[href="#selected"]').tab('show');
+                $("#second-data").load(loaduri);
+                console.log('loaded ' + loaduri)
+                $('#topMenu a[href="#second-data"]').tab('show');
+                $("html, body").animate({scrollTop: 0}, "slow");
+            }
+
+            // left bar profile edit
+            $("#my_profile").css('cursor', 'pointer').click(function (e) {
+                console.log('editing profile');
+                myProfileEdit();
+            });
+
+            // search submit
+            $("#search-btn").css('cursor', 'pointer').click(function (e) {
+                e.preventDefault();
+                console.log('clicked search btn');
+                let data = {}
+                let sterm = $("#keywords").val();
+                sterm = encodeURIComponent(sterm);
+                console.log('searching for ' + sterm);
+                genericTabActions("/search/?keywords=" + sterm + "/", 'Search Results');
+            });
+
+
+            // hot tab action
+            $(".tab-content").on("click", function (event) {
+                src_id = 0;
+                src = event.target;
+                src_id = src.getAttribute('data-action');
+                src_tg = src.getAttribute('data-action2');
+                src_name = src.getAttribute('data-action');
+                src_action = src.getAttribute('data-action2');
+                console.log('ACTION: element is ' + src);
+                console.log('ACTION: target is ' + src_id);
+                console.log('ACTION: action is ' + src_tg);
+
+                if (src.getAttribute('data-action2')) {
+                    console.log('what is the action:   ' + src.getAttribute('data-action2'));
+                    genericVMActions(src_name, src_action, src);
+                }
+                ;
+
+                if (pageProps[src.id] !== undefined) {
+                    console.log('should be loading: ' + pageProps[src.id][0]);
+                    console.log('source id is ' + src.id);
+
+                    if (src.closest('#home-data')) {
+                        genericTabActions(pageProps[src.id][0], pageProps[src.id][1]);
+                    }
+                    ;
+
+                    if (src.closest('#second-data')) {
+                        console.log('this is from the second tab!!!!!');
+                        genericTabActions(pageProps[src.id][0], pageProps[src.id][1]);
+                        //$("#tab3_content").clear();
+                    }
+                    ;
+                    if (src.closest('#third-data')) {
+                        console.log('this is from the third tab!!!!!');
+                        genericTabActions(pageProps[src.id][0], pageProps[src.id][1]);
+                        //$("#tab3_content").clear();
+                    }
+                    ;
+
+                    //if (src.getAttribute('data-action')) {
+                    //    console.log('what is the name:   '); // + src.hostname);
+                    //};
+                    // classy actions
+                    console.log('action: ' + src_tg)
+                    if (src_tg !== undefined) {
+                        console.log('class: ' + src_tg);
+                    }
+                    ;
+                }
+            });
+        });
+    </script>
+
+    {% block extrahead %}
+
+    {% endblock %}
+
+    <title>Travel Support Etc</title>
+</head>
+<body class="doc-body">
+<div id="wrapper">
+    {% if user.is_authenticated %}
+
+    {% endif %}
+    <!-- Topbar -->
+    {% block top_nav %}
+        {% include "includes/topbar.html" %}
+    {% endblock %}
+    <!-- leftbar -->
+    {% block sidebar %}
+        {% include "includes/leftbar.html" %}
+    {% endblock %}
+
+    <!-- modal -->
+    {#% block modals %#}
+    {% include "includes/modals.html" %}
+    {#% endblock %#}
+
+    <div id="content-wrapper">
+        <!-- Main Content -->
+
+        <!-- #page-wrapper -->
+        {% block header %}
+        {% endblock header %}
+
+        <!-- /.row -->
+        <div id="content" class="m-4">
+            {% block content %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">No Header Content Found.</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            {% endblock content %}
+            <a id="page_bottom"></a>
+        </div>
+    </div>
+
+    <!-- footer Content -->
+    {% block footer %}
+
+    {% endblock footer %}
+
+    <!-- jQuery, Bootstrap Bundle (includes Popper) and Material -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+            integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha256-GRJrh0oydT1CwS36bBeJK/2TggpaUQC6GzTaTQdZm0k=" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/gh/djibe/material@4.6.2-1.0/js/material.min.js" crossorigin></script>
+
+    {% block extra_scripts %}
+        <script>
+        </script>
+    {% endblock extra_scripts %}
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,4 @@
+# git ignore the following
+/db.sqlite3
+/venv
+/.idea

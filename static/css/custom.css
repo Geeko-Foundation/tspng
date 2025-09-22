@@ -1,0 +1,238 @@
+/* customised css overides */
+/* svg scaling */
+svg, #node_map{
+    height: 100%;
+    width: 100%;
+}
+
+
+url('/static/img/splash.jpg');
+
+.bg-primary {background-color: #6200ee;}
+.bg-primary-dark {background-color: #3700b3;}
+.bg-primary-light {background-color: #bb86fc;}
+.bg-secondary {background-color: #03dac6;}
+.bg-secondary-dark {background-color: #018786;}
+.bg-secondary-light  {background-color: #66fff8;}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-72 { font-size: 72px; }
+
+
+th {
+    text-transform: uppercase;
+    background-color: #f5f5f5;
+    /*display: -ms-flexbox;
+    display: flex;
+    list-style: none;*/
+    padding: .625rem .5rem;
+}
+
+#mynotes {
+  width: 100%;
+  height: 200px;
+  /*padding: 12px 20px;*/
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: inherit;
+}
+
+#myChart2 {
+    display: none; float: right;
+}
+
+.appTitle {
+    color: gold;
+}
+
+
+.underline-default {
+    border-bottom: .3125rem solid #9c27b0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.underline-info {
+    border-bottom: .3125rem solid #2196f3;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    /* padding: 0 1rem; */
+}
+
+.underline-success {
+    border-bottom: .3125rem solid #4caf50;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    /* padding: 0 1rem; */
+}
+
+.underline-warning {
+    border-bottom: .3125rem solid #ff9800;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    /* padding: 0 1rem; */
+}
+
+.underline-danger {
+    border-bottom: .3125rem solid #f44336;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    /* padding: 0 1rem; */
+}
+
+.underline-dark {
+    border-bottom: .3125rem solid #202020;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    /* padding: 0 1rem; */
+}
+
+.avatar-img {
+    width: 50px;
+    height: auto;
+}
+
+.logo-bgcolor {
+    background-color: #00838f;
+}
+
+.attendee_VON { background-color: wheat; margin 2px; } /*'View Only'*/
+.attendee_ATT { background-color: greenyellow; margin 2px; } /*'Standard Attendee*/
+.attendee_PRT { background-color: lawngreen; margin 2px; } /*'Premium Attendee'*/
+.attendee_PRE { background-color: gold; margin 2px; } /*'Presenter'*/
+.attendee_CPR { background-color: goldenrod; margin 2px; } /*'CoPresenter'*/
+.attendee_ADM { background-color: orangered; margin 2px; } /*'Administrator'*/
+.attendee_TSP { background-color: darkblue; margin 2px; } /*'Technical Support'*/
+.attendee_SPN { background-color: darkslateblue; margin 2px; } /*'Sponsor'*/
+
+.textpop {
+    text-shadow: 0 0 5pt rgba(255, 0, 0, 1);
+}
+
+.console_grab {
+    max-height: 80px;
+    max-width: auto;
+}
+
+.instance {
+    margin: 5px;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+/* flash on update */
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Tips#run_an_animation_again */
+.value-change {
+	-webkit-animation: color-change 1s ease-out;
+	-moz-animation: color-change 1s ease-out;
+	animation: color-change 1s ease-out;
+	/*-webkit-animation-iteration-count: infinite;
+	-moz-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;*/
+}
+
+@keyframes color-change {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 1; }
+  from {background-color: green;}
+  to {background-color: transparent;}
+}
+
+.context-menu2 {
+    position: absolute;
+    display: none;
+    color: whitesmoke; /*rgba(0, 128, 0, 0.8);*/
+    padding: 8px;
+    /*border-radius: 10px;*/
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    min-width: 150px;
+    background-color: #5a5a5a;
+    /*border: 1px solid #3F3F3F;*/
+    z-index: 1200;
+}
+
+.context-menu2 ul {
+    padding: 4px;
+    list-style-type: none;
+    margin: 4px;
+    padding: 0px;
+    cursor: default;
+}
+
+.context-menu2 ul li {
+    padding: 2px;
+}
+
+.context-menu2 i {
+    padding: 4px;
+}
+
+.context-menu2 ul li:hover {
+    background-color: #4677f8;
+    color: #fefefe;
+    /* border-radius: 8px;*/
+}
+
+
+/*
+.loader {
+    position: center;
+    z-index: -15;
+    margin-left: 40%;
+    margin-top: 20%;
+
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+*/
+/* pulsing dot from http://cssdeck.com/labs/css3-pulsating-dot */
+/* https://projects.lukehaas.me/css-loaders/ */
+
+/* brightess for console pause/running */
+.brighter-span {
+  filter: brightness(150%);
+}
+
+.darker-span {
+  filter: brightness(50%);
+}
+
+tfoot {
+    background-color: #f5f5f5;
+    /*font-size: 1.25rem;*/
+    font-weight: 500;
+}

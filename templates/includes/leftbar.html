@@ -1,0 +1,59 @@
+{% load static %}
+{% load user_tags %}
+
+<!-- Sidebar -->
+<div id="appNavdrawer" class="navdrawer" tabindex="-1" aria-hidden="true">
+    <div class="navdrawer-content">
+        <div class="navdrawer-header bg-primary-dark">
+            <a class="navbar-brand px-0" href="#">
+                <img height="48px" src="{% static 'img/applogo.png' %}"/>
+                <div class="navbar-brand text-white">
+                    <bold>Travel Support</bold>
+                </div>
+            </a>
+            <div class="text-info">
+                <a class="text-white-50" href="https://geekos.org/" target="_blank">Easy Travel Support.</a>
+            </div>
+        </div>
+
+        <nav class="navdrawer-nav">
+            <a id="dashboard_goto" class="nav-item nav-link" href="/">
+                <i class="material-icons pr-2">dashboard</i>Dashboard View
+            </a>
+            <div class="navdrawer-divider"></div>
+
+            <!-- menu items -->
+            <div class="text-white">
+
+                <a id="option-1-btn" class="nav-item nav-link py-2" data-toggle="popover" href="#second-tab">
+                    <i class="material-symbols-outlined p-2">dns</i>Option 1
+                </a>
+                <!-- etc -->
+
+                <div class="accordion">
+                    <a class="nav-item nav-link collapsed dropdown-toggle" data-toggle="collapse"
+                       href="#doc-navdrawer-hosts">
+                        <i class="material-icons-outlined p-2">device_hub</i>accordian items
+                    </a>
+                    <div id="doc-navdrawer-hosts">
+                        <div class="collapse pb-2 ">whatever 1</div>
+                        <div class="collapse pb-2 ">whatever 2</div>
+                        <div class="collapse pb-2 ">whatever 3</div>
+                    </div>
+                </div>
+
+                <a class="nav-item nav-link text-dark" href="/accounts/logout/">
+                    <strong>
+                        <i class="material-icons">logout</i> Logout
+                    </strong>
+                </a>
+        </nav>
+    </div>
+</div>
+
+<!-- End Sidebar HTML-->
+<!-- Sidebar Script-->
+<script>
+    //export
+
+</script>

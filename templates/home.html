@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% load static %}
+{% block extrahead %}
+    <style>
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div class="tab-content" id="justifiedTabContent">
+        <div aria-labelledby="home-tab" class="tab-pane fade show active" id="home-data" role="tabpanel">
+            <!--home tab-->
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <h5>Welcome {{ request.user.first_name }} to Travel Support</h5>
+                            <p>The easy to use blah blah</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- resources -->
+                <div class="col-md-4" data-intro="#resStatus">
+                    <div class="card mb-3">
+                        <div class="card-header text-primary">
+                            <h6><span class="material-icons md-36">ssid_chart</span> Panel One</h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-title" id="resource_status" data-toggle="popover" data-placement="bottom">
+                                Some text here
+                            </p>
+                            <div class="card-text">
+                                Cool Chart
+                                <canvas width="50%" id="myPoint1"></canvas>
+                                Top Users
+                                <ul>
+                                    <li>Linus</li>
+                                    <li>Me</li>
+                                    <li>You</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- capacity -->
+                <div class="col-md-5" data-intro="#runStatus">
+                    <div class="card mb-3">
+                        <div class="card-header text-primary">
+                            <a href="#second-tab" class="instance-all text-primary">
+                                <h6><i class="material-icons md-36 mr-2 d-inline">pie_chart</i>Budget</h6>
+                                <div class="d-inline vm_all"></div>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="card-title" id="resource_status" data-toggle="popover" data-placement="bottom">
+                                Total Usage
+                            </p>
+                            <div class="card-text">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <canvas width="50%" id="myPie1"></canvas>
+                                    </div>
+                                    <div class="col-sm">
+                                        <canvas width="50%" id="myPie2"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Requests -->
+                <div class="col-md-3" data-intro="#msqStatus">
+                    <div class="card mb-3">
+                        <div class="card-header text-primary">
+                            <h6><i class="material-icons md-36 mr-2">insights</i>Pending Requests</h6>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="card-title" id="broker_status" data-toggle="popover" data-placement="bottom">
+                                Active
+                            </div>
+                            <div class="card-text">
+                                <div class="row">
+                                    <canvas id="ioPerf"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if request.user.is_staff %}
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card-header text-primary">
+                            <h6><i class="material-icons md-36 mr-2">monitor_heart</i>System Health</h6>
+                        </div>
+                        <div class="card-body">
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- second tab -->
+        <div aria-labelledby="second-tab" class="tab-pane fade" id="second-data" role="tabpanel"
+             data-intro="#second-data">2nd tab
+            <div id="tab2_content">
+            </div>
+        </div>
+
+        <!--third tab-->
+        <div aria-labelledby="third-tab" class="tab-pane fade" id="third-data" role="tabpanel" data-intro="#third-tab">
+            third tab
+            <div id="tab3_content">
+            </div>
+        </div>
+
+        <!-- chartjs -->
+        <h4 id="broker_chart" data-toggle="popover" data-placement="bottom">
+            <i class="material-icons mr-2 text-success">bar_chart</i>
+        </h4>
+        <div id="msg-data">no incoming messages</div>
+        <!-- end chartjs -->
+    </div>
+{% endblock %}
+
+
+{% block footer %}
+
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/sample_charts.js"></script>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+{% endblock %}

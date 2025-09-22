@@ -1,0 +1,243 @@
+.navbar-header {	
+}
+
+/*.navbar-default .navbar-brand,
+.navbar-default */
+
+
+.navbar-default  .navbar-brand {
+	color:#428BCA;
+	font-size:22pt;
+	font-weight:500;
+}
+
+.navbar-default .navbar-brand:hover {
+	color:#fff;
+/*	font-size:22pt;
+/*	width: 40%;*/
+}
+
+
+.navbar-brand img{
+	height: 38px;
+	padding-right:10px;
+	padding-bottom:10px;
+	float: left;
+/*	vertical-align: middle;*/
+}
+
+a .navbar-brand {
+	float: left;
+	color:#428BCA;
+	font-size:20pt;
+	font-weight:700;
+	padding:5px;
+
+}
+
+.brand,
+.navbar,
+.navbar-default {
+	background-color: #004e77;
+	color: #fff;
+}
+
+.panel-heading {
+	vertical-align: middle;
+}
+
+.fa { 
+	font: "Lucida Grande", "Trebuchet MS", Verdana, Arial, sans-serif;
+	
+}
+
+.nav li a {
+	font-size:14pt;
+	text-align: right;
+	vertical-align: text-middle;
+}
+
+.nav div li a {
+	display: block;
+    padding: 10px 15px;
+	font-size: 12pt;
+	text-align: right;
+	vertical-align: text-middle;
+}
+
+.nav div li a:hover,
+.nav li a:hover {
+	background-color:#004E77;
+	color:#fff !important;
+}
+
+.nav div li a i,
+.nav li a i {
+	text-align: right;
+	margin-left: 10px;
+}
+
+/*	vertical-align: top;*/
+/*	vertical-align: top;*/
+
+/*
+.count-icon {
+    display: inline-block;
+    position: relative;
+}
+
+.count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    
+    height: 16px;
+    width: 16px;
+    
+    background: Gold;
+    border-radius: 8px;
+    
+    font-size: 12px;    
+    text-align: center;
+}   
+*/
+
+/*
+    single pane setup. Code inspired by:
+    https://blackrockdigital.github.io/startbootstrap-scrolling-nav/
+*/
+
+#intro {
+	height: 100%;
+	padding-top: 150px;
+	text-align: center;
+	background: #eee;
+}
+
+.setup-section {
+	height: 200%;
+	padding-top: 150px;
+	text-align: center;
+	backg
+/* drag and drop Style */
+.upload-drop-zone {
+  height: 200px;
+  border-width: 2px;
+  margin-bottom: 20px;
+}
+
+/* skin.css Style*/
+.upload-drop-zone {
+  color: #ccc;
+  border-style: dashed;
+  border-color: #ccc;
+  line-height: 200px;
+  text-align: center
+}
+
+.upload-drop-zone.drop {
+  color: #222;
+  border-color: #222;
+  round: #eee;
+}
+
+/* skin.css Style*/
+
+/*.input-group,
+.input-group date {
+	width: 80%;
+}*/
+.field-help {
+  font-size: 8pt;
+  font-style: italic;
+  color: #222;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 6px 6px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-textarea {
+    width: 100%;
+    height: 100px;
+    padding: 6px 6px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+
+/* blurred background */
+.bg-image {
+  /* The image used */
+  background-image: url("/static/img/background.jpg");
+  /* Add the blur effect */
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* blurred background text                       */
+/* Position text in the middle of the page/image */
+.bg-text {
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+  color: darkorange;
+  font-weight: bold;
+  border: 3px solid #f1f1f1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 80%;
+  padding: 20px;
+  text-align: center;
+}
+
+/* css tree view from https://two-wrongs.com/draw-a-tree-structure-with-only-css */
+.clt, .clt ul, .clt li {
+     position: relative;
+}
+
+.clt ul {
+    list-style: none;
+    padding-left: 32px;
+}
+
+.clt li::before, .clt li::after {
+    content: "";
+    position: absolute;
+    left: -12px;
+}
+
+clt li::before {
+    border-top: 1px solid #000;
+    top: 9px;
+    width: 8px;
+    height: 0;
+}
+
+.clt li::after {
+    border-left: 1px solid #000;
+    height: 100%;
+    width: 0px;
+    top: 2px;
+}
+
+.clt ul > li:last-child::after {
+    height: 8px;
+}
+
