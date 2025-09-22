@@ -144,11 +144,7 @@
                 console.log('ACTION: target is ' + src_id);
                 console.log('ACTION: action is ' + src_tg);
 
-                if (src.getAttribute('data-action2')) {
-                    console.log('what is the action:   ' + src.getAttribute('data-action2'));
-                    genericVMActions(src_name, src_action, src);
-                }
-                ;
+
 
                 if (pageProps[src.id] !== undefined) {
                     console.log('should be loading: ' + pageProps[src.id][0]);
@@ -157,20 +153,20 @@
                     if (src.closest('#home-data')) {
                         genericTabActions(pageProps[src.id][0], pageProps[src.id][1]);
                     }
-                    ;
+
 
                     if (src.closest('#second-data')) {
                         console.log('this is from the second tab!!!!!');
                         genericTabActions(pageProps[src.id][0], pageProps[src.id][1]);
                         //$("#tab3_content").clear();
                     }
-                    ;
+
                     if (src.closest('#third-data')) {
                         console.log('this is from the third tab!!!!!');
                         genericTabActions(pageProps[src.id][0], pageProps[src.id][1]);
                         //$("#tab3_content").clear();
                     }
-                    ;
+
 
                     //if (src.getAttribute('data-action')) {
                     //    console.log('what is the name:   '); // + src.hostname);
@@ -180,7 +176,7 @@
                     if (src_tg !== undefined) {
                         console.log('class: ' + src_tg);
                     }
-                    ;
+
                 }
             });
         });

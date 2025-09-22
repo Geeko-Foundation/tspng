@@ -6,7 +6,7 @@
     <div class="navdrawer-content">
         <div class="navdrawer-header bg-secondary-dark">
             <a class="navbar-brand px-0" href="#">
-                <img height="48px" src="{% static 'img/applogo.png' %}"/>
+                <img height="64px" src="{% static 'img/applogo.png' %}"/>
                 <div class="navbar-brand text-white">
                     <bold>Travel Support</bold>
                 </div>
@@ -17,6 +17,10 @@
         </div>
 
         <nav class="navdrawer-nav">
+            <a id="profile_edit" class="nav-item nav-link"  href="/">
+                <img height="48px" src="{% static 'img/person.png' %}"/>
+                USERNAME Profile Edit
+            </a>
             <a id="dashboard_goto" class="nav-item nav-link" href="/">
                 <i class="material-icons pr-2">dashboard</i>Dashboard View
             </a>
