@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
@@ -34,19 +35,14 @@ class Event(models.Model):
         Budget, null=True, blank=True, on_delete=models.SET_NULL, related_name="events", db_index=True
     )
     shipment_type = models.CharField(max_length=255, null=True, blank=True)
-
-    # Many-to-many (wired via through table)
     organizers = models.ManyToManyField(
-        "User",
-        through="EventOrganizer",
-        related_name="organized_events",
-        blank=True,
+        settings.AUTH_USER_MODEL, through="EventOrganizer", related_name="organized_events", blank=True
     )
 
     def __str__(self):
         return self.name
 
-
+# TODO: is this relevant?
 class PostalAddress(models.Model):
     line1 = models.CharField(max_length=255, null=True, blank=True)
     line2 = models.CharField(max_length=255, null=True, blank=True)
@@ -63,35 +59,9 @@ class PostalAddress(models.Model):
         return ", ".join([b for b in bits if b]) or f"Address #{self.pk}"
 
 
-class User(models.Model):
-    email = models.CharField(max_length=255, unique=True)
-    encrypted_password = models.CharField(max_length=255, default="")
-    reset_password_token = models.CharField(max_length=255, null=True, blank=True, unique=True)
-    reset_password_sent_at = models.DateTimeField(null=True, blank=True)
-    remember_created_at = models.DateTimeField(null=True, blank=True)
-    sign_in_count = models.IntegerField(default=0)
-    current_sign_in_at = models.DateTimeField(null=True, blank=True)
-    last_sign_in_at = models.DateTimeField(null=True, blank=True)
-    current_sign_in_ip = models.CharField(max_length=255, null=True, blank=True)
-    last_sign_in_ip = models.CharField(max_length=255, null=True, blank=True)
-    nickname = models.CharField(max_length=255)
-    locale = models.CharField(max_length=10, default="en")
-    created_at = models.DateTimeField(null=True, blank=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
-
-    class Meta:
-        indexes = [
-            models.Index(fields=["email"], name="index_users_on_email"),
-            models.Index(fields=["reset_password_token"], name="index_users_on_reset_password_token"),
-        ]
-
-    def __str__(self):
-        return self.nickname or self.email
-
-
 class Request(models.Model):
     state = models.CharField(max_length=255, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="requests", db_index=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="requests", db_index=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="requests", db_index=True)
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True)
@@ -107,7 +77,7 @@ class Request(models.Model):
     def __str__(self):
         return f"Request #{self.pk} for {self.event}"
 
-
+# TODO: Discussion required as to relevance of currencies - I believe that all requests should be in EUR, GBP or USD
 class RequestExpense(models.Model):
     request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name="expenses")
     subject = models.CharField(max_length=255, null=True, blank=True)
@@ -124,10 +94,10 @@ class RequestExpense(models.Model):
     def __str__(self):
         return self.subject or f"Expense #{self.pk}"
 
-
+# TODO: Discussion required as to relevance of currencies - I believe that all payments should be in EUR, GBP or USD
 class Reimbursement(models.Model):
     state = models.CharField(max_length=255, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reimbursements")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reimbursements")
     request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name="reimbursements")
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True)
@@ -138,7 +108,7 @@ class Reimbursement(models.Model):
     def __str__(self):
         return f"Reimbursement #{self.pk}"
 
-
+# TODO: possibly move this to a different 'payment' app - TBD
 class BankAccount(models.Model):
     holder = models.CharField(max_length=255, null=True, blank=True)
     bank_name = models.CharField(max_length=255, null=True, blank=True)
@@ -158,7 +128,7 @@ class BankAccount(models.Model):
     def __str__(self):
         return self.iban or f"BankAccount #{self.pk}"
 
-
+# TODO: possibly move this to a different 'payment' app - TBD
 class Payment(models.Model):
     reimbursement = models.ForeignKey(
         Reimbursement, null=True, blank=True, on_delete=models.CASCADE, related_name="payments"
@@ -179,7 +149,7 @@ class Payment(models.Model):
     def __str__(self):
         return self.subject or f"Payment #{self.pk}"
 
-
+# TODO: possibly move this to a different 'payment' app - TBD
 class ReimbursementAttachment(models.Model):
     reimbursement = models.ForeignKey(Reimbursement, on_delete=models.CASCADE, related_name="attachments")
     title = models.CharField(max_length=255)
@@ -190,7 +160,7 @@ class ReimbursementAttachment(models.Model):
     def __str__(self):
         return self.title
 
-
+# TODO: possibly move this to a different 'payment' app - TBD
 class ReimbursementLink(models.Model):
     reimbursement = models.ForeignKey(Reimbursement, on_delete=models.CASCADE, related_name="links")
     title = models.CharField(max_length=255)
@@ -212,12 +182,9 @@ class Audit(models.Model):
     auditable_object_id = models.IntegerField(null=True, blank=True)
     auditable = GenericForeignKey("auditable_content_type", "auditable_object_id")
 
-    # user (polymorphic in Rails)
-    user_content_type = models.ForeignKey(
-        ContentType, on_delete=models.CASCADE, related_name="audits_as_user", null=True, blank=True
-    )
-    user_object_id = models.IntegerField(null=True, blank=True)
-    user = GenericForeignKey("user_content_type", "user_object_id")
+    # Use the native User directly (instead of polymorphic user)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
+                             on_delete=models.SET_NULL, related_name="audits")
 
     action = models.CharField(max_length=255, null=True, blank=True)
     audited_changes = models.TextField(null=True, blank=True)
@@ -241,7 +208,6 @@ class Audit(models.Model):
             models.Index(fields=["auditable_content_type", "auditable_object_id", "version"], name="auditable_index"),
             models.Index(fields=["created_at"], name="index_audits_on_created_at"),
             models.Index(fields=["request_uuid"], name="index_audits_on_request_uuid"),
-            models.Index(fields=["user_content_type", "user_object_id"], name="user_index"),
         ]
 
     def __str__(self):
@@ -257,7 +223,8 @@ class Comment(models.Model):
     machine = GenericForeignKey("machine_content_type", "machine_object_id")
 
     body = models.TextField(null=True, blank=True)
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="comments")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
+                             on_delete=models.SET_NULL, related_name="comments")
     created_at = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(null=True, blank=True)
     private = models.BooleanField(default=False)
@@ -278,7 +245,8 @@ class StateChange(models.Model):
     state_event = models.CharField(max_length=255, null=True, blank=True)
     from_state = models.CharField(max_length=255)  # Rails column "from"
     to_state = models.CharField(max_length=255)
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="state_changes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
+                             on_delete=models.SET_NULL, related_name="state_changes")
     notes = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(null=True, blank=True)
@@ -294,7 +262,8 @@ class EventEmail(models.Model):
     to = models.TextField()
     subject = models.CharField(max_length=255)
     body = models.TextField()
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="event_emails")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
+                             on_delete=models.SET_NULL, related_name="event_emails")
     event = models.ForeignKey(Event, null=True, blank=True, on_delete=models.SET_NULL, related_name="emails")
     created_at = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(null=True, blank=True)
@@ -305,7 +274,7 @@ class EventEmail(models.Model):
 
 class EventOrganizer(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_organizers")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="event_organizers")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="event_organizers")
 
     class Meta:
         unique_together = [("event", "user")]
@@ -314,8 +283,8 @@ class EventOrganizer(models.Model):
         return f"{self.user} organizes {self.event}"
 
 
+#TODO: What does this do?
 # ---------- Background jobs ----------
-
 class DelayedJob(models.Model):
     priority = models.IntegerField(default=0)
     attempts = models.IntegerField(default=0)
@@ -336,18 +305,18 @@ class DelayedJob(models.Model):
         return f"Job #{self.pk} (prio {self.priority})"
 
 
+#TODO: this might be replaced by Django Auth Group membership - TBD
 # ---------- Profiles / roles ----------
-
 class Role(models.Model):
-    # Added because schema referenced role_id but didn't include roles table
+    # Schema referenced role_id but didn't include roles table; keep minimal Role.
     name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
 
-
+# TODO: move this to a separate 'profile' app
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
     role = models.ForeignKey(Role, on_delete=models.PROTECT, related_name="user_profiles")
     full_name = models.CharField(max_length=255, null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
