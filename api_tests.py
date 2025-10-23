@@ -1,5 +1,5 @@
 import requests, uuid
-
+import time
 # Replace this with your API token (Bearer token)
 ACCESS_TOKEN = "25d74ef1-ebd8-4468-a51a-c8efac6d79e8"
 
@@ -220,12 +220,78 @@ def fund_transfer_from_balance(profile_id, transfer_id):
                       "Accept-Minor-Version": "1",
                       "X-idempotence-uuid": str(uuid.uuid4())},
                       json=body)
+    print(r.status_code)
+    print(str(r.headers))
     try:
         r.raise_for_status()
     except requests.HTTPError:
         print("Funding failed:", r.status_code, r.text)  # <-- shows the real reason (SCA needed? not owner? etc.)
         #raise
     return r.json()
+
+def get_transfer(transfer_id):
+    url = f"{BASE_URL}/v1/transfers/{transfer_id}"
+    r = requests.get(url, headers={**auth_headers(False), "Accept-Minor-Version": "1"})
+    print(r.status_code)
+    print(str(r.headers))
+    try:
+        r.raise_for_status()
+    except requests.HTTPError:
+        print("Funding failed:", r.status_code, r.text)  # <-- shows the real reason (SCA needed? not owner? etc.)
+        #raise
+    return r.json()
+
+def funds_converted(transfer_id):
+    '''this is a sandbox call only, pushes the processing state along'''
+    url = f"{BASE_URL}/v1/simulation/transfers/{transfer_id}/funds_converted"
+    r = requests.get(url, headers={**auth_headers(False), "Accept-Minor-Version": "1"})
+    print(r.status_code)
+    print(str(r.headers))
+    try:
+        r.raise_for_status()
+    except requests.HTTPError:
+        print("Funding failed:", r.status_code, r.text)  # <-- shows the real reason (SCA needed? not owner? etc.)
+        #raise
+    return r.json()
+
+def outgoing_sent(transfer_id):
+    '''this is a sandbox call only, pushes the processing state along'''
+    url = f"{BASE_URL}/v1/simulation/transfers/{transfer_id}/outgoing_payment_sent"
+    r = requests.get(url, headers={**auth_headers(False), "Accept-Minor-Version": "1"})
+    print(r.status_code)
+    print(str(r.headers))
+    try:
+        r.raise_for_status()
+    except requests.HTTPError:
+        print("Funding failed:", r.status_code, r.text)  # <-- shows the real reason (SCA needed? not owner? etc.)
+        #raise
+    return r.json()
+
+def profile_status(profile_id):
+    '''this is a sandbox call only, pushes the processing state along'''
+
+    #url = f"{BASE_URL}/v1/simulation/profiles/{profile_id}/verifications"
+
+    #def simulate_verify_all():
+    url = f"{BASE_URL}/v1/simulation/verify-profile"
+    #    r.raise_for_status()
+
+    #url = f"{BASE_URL}/v1/simulation/verify/profile/{profile_id}"
+    headers = {
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Content-Type": "application/json"
+        }
+    r = requests.post(url, headers=headers)
+    r.raise_for_status()
+    #return r.json()
+    #url = f"{BASE_URL}/v3/profiles/{profile_id}/verification-status/bank-transfer?source_currencies=GBP,EUR"
+    #print(url)
+    #r = requests.post(url, headers={**auth_headers(False), "Accept-Minor-Version": "1"})
+    print(r.status_code)
+    #print(str(r.headers))
+    #print(str(r.text))
+    time.sleep(1)
+    #return r.json()
 
 def get_account_requirements(quote_id):
     """
@@ -271,6 +337,9 @@ def get_activities(profile_id):
     #    print(a)
     return r.json()
 
+#https://docs.wise.com/api-docs/guides/regional/eu
+#IBAN: "BE57 9677 4768 2935", BIC: "TRWIBEB1"
+
 if __name__ == "__main__":
     '''
     make it all happen
@@ -282,6 +351,9 @@ if __name__ == "__main__":
     for profile in profiles:
         print(f"Profile ID: {profile['id']}")
         print(f"Type: {profile['type']}")
+        profile_status(profile['id'])
+        #print(verify)
+
         '''get balances for each profile'''
         balances = list_balances(profile_id=profile['id'], types="STANDARD")
         for b in balances:
@@ -323,9 +395,19 @@ if __name__ == "__main__":
             recipient = create_recipient(profile['id'], "John Doe")
             #recipient = person_profile
             transfer = create_transfer(profile['id'], quote['id'], recipient['id'], reference="April payroll")
+            time.sleep(5)
             print("Transfer created:", transfer['id'], transfer.get("status"))
             funding = fund_transfer_from_balance(profile['id'], transfer['id'])
             print("Funding result:", funding)
             print("Estimated target amount:", quote.get("paymentOptions", [{}])[0].get("targetAmount"))
+            time.sleep(10)
+            status = get_transfer(transfer['id'])
+            print("Transfer status:", str(status))
+            time.sleep(10)
+            status = funds_converted(transfer['id'])
+            print("Funds converted:", str(status))
+            time.sleep(10)
+            #status = outgoing_sent(transfer['id'])
+            #print("Transfer status:", str(status))
         print("-" * 40)
         print('\n')
