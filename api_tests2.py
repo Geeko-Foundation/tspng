@@ -4,6 +4,7 @@ import time
 import requests
 import datetime
 """
+V0.2
 this is a more complete transfer example, currently failing at a SCA test phase.
 One time token needs to signed, and the challenge needs to be cleared - at least for EUR - GBP transfers.
 """
@@ -23,14 +24,14 @@ BASE_URL = (
 #SOURCE_CURRENCY = "GBP"
 #TARGET_CURRENCY = "EUR"
 SOURCE_CURRENCY = "EUR"
-TARGET_CURRENCY = "GBP"
+TARGET_CURRENCY = "EUR"
 SOURCE_AMOUNT   = 25.00                  # or set targetAmount instead
 
 # Recipient details (example: EUR IBAN recipient)
+RECIPIENT_CURRENCY = "EUR"
+RECIPIENT_TYPE     = "iban"              # e.g., "iban", "sort_code", "swift_code", etc.
 #RECIPIENT_CURRENCY = "EUR"
-#RECIPIENT_TYPE     = "iban"              # e.g., "iban", "sort_code", "swift_code", etc.
-RECIPIENT_CURRENCY = "GBP"
-RECIPIENT_TYPE     = "sort_code"              # e.g., "iban", "sort_code", "swift_code", etc.
+#RECIPIENT_TYPE     = "sort_code"              # e.g., "iban", "sort_code", "swift_code", etc.
 RECIPIENT_NAME     = "John Doe"
 RECIPIENT_IBAN     = "DE89370400440532013000"  # <-- put a valid IBAN for real runs
 
@@ -242,6 +243,7 @@ def fund_transfer_with_ott(session, base_url, profile_id, transfer_id, funding_t
     # 2) extract OTT from 403 headers
     ott = r.headers.get("x-2fa-approval")
     print(ott)
+    print("TRACE ID: "+r.headers.get("x-trace-id"))
     result = r.headers.get("x-2fa-approval-result")  # e.g., REJECTED/APPROVED
     if not ott:
         raise RuntimeError("SCA required, but server did not return One-Time-Token (x-2fa-approval).")

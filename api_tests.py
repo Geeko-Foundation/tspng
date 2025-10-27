@@ -1,5 +1,9 @@
 import requests, uuid
 import time
+"""
+V0.1
+first stab and getting something working. 
+"""
 # Replace this with your API token (Bearer token)
 ACCESS_TOKEN = "25d74ef1-ebd8-4468-a51a-c8efac6d79e8"
 
@@ -403,10 +407,10 @@ if __name__ == "__main__":
             time.sleep(10)
             status = get_transfer(transfer['id'])
             print("Transfer status:", str(status))
-            time.sleep(10)
-            status = funds_converted(transfer['id'])
-            print("Funds converted:", str(status))
-            time.sleep(10)
+            #time.sleep(10)
+            #status = funds_converted(transfer['id'])
+            #print("Funds converted:", str(status))
+            #time.sleep(10)
             #status = outgoing_sent(transfer['id'])
             #print("Transfer status:", str(status))
         print("-" * 40)
