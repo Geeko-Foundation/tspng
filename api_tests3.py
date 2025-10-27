@@ -213,6 +213,7 @@ def main(transfer_id=None):
         balances = list_balances(profile_id=profile_id, types="STANDARD")
         for b in balances:
             print(f"{b['currency']} | balanceId={b['id']} | amount={b['amount']['value']}")
+        print('---------------------------\n')
         # 1) Create an authenticated quote (bound to your profile)
         quote = create_quote(
             profile_id,
