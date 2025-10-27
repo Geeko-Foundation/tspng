@@ -74,6 +74,28 @@ def get_profiles():
     chosen = business or data[0]
     return chosen["id"], chosen["type"]
 
+def list_balances(profile_id, types="STANDARD"):
+    """
+    Fetches the balances for a specified profile.
+
+    This function retrieves the balance information for a given profile ID. The profile ID
+    is required, and the type of balance to retrieve can also be specified. By default, the
+    function retrieves "STANDARD" balances. Additional balance types such as "SAVINGS" can
+    be included by providing a comma-separated string of types.
+
+    :param profile_id: The unique identifier of the profile.
+    :param types: A comma-separated string indicating the types of balances to retrieve.
+                  Defaults to "STANDARD".
+    :return: A dictionary containing the balance information for the specified profile.
+    """
+    url = f"{BASE_URL}/v4/profiles/{profile_id}/balances"
+    headers = {"Authorization": f"Bearer {API_TOKEN}"}
+    params = {"types": types}  # e.g. "STANDARD" or "STANDARD,SAVINGS"
+    r = requests.get(url, headers=headers, params=params)
+    r.raise_for_status()
+    return r.json()
+
+
 def create_quote(profile_id, *, source_currency, target_currency, source_amount=None, target_amount=None, pay_out=None, preferred_pay_in="BALANCE", target_account=None):
     """Create an authenticated quote bound to your profile."""
     body = {
@@ -187,6 +209,10 @@ def main(transfer_id=None):
         profile_id, profile_type = get_profiles()
         print(f"Using profile {profile_id} ({profile_type})")
 
+        '''get balances for each profile'''
+        balances = list_balances(profile_id=profile_id, types="STANDARD")
+        for b in balances:
+            print(f"{b['currency']} | balanceId={b['id']} | amount={b['amount']['value']}")
         # 1) Create an authenticated quote (bound to your profile)
         quote = create_quote(
             profile_id,
